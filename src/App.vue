@@ -25,10 +25,10 @@ export default {
 </script>
 
 <style lang="scss">
-#body {
+body {
   display: flex;
   justify-content: center;
-  width: 100vw;
+  align-items: center;
   height: 100vh;
   margin: 0 auto;
   background-color: #1e1e1e;
