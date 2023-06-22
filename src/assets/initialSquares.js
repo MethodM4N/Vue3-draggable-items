@@ -22,7 +22,6 @@ const initialSquares = [
   null,
   null,
   null,
-  null,
   null
 ];
 

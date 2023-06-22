@@ -1,5 +1,6 @@
 <script>
 import initialSquares from '@/assets/initialSquares.js';
+import generateNewSquare from '@/assets/generateNewSquare.js';
 import DeletePopup from '@/components/DeletePopup.vue';
 
 export default {
@@ -43,6 +44,11 @@ export default {
     onPopupDelete(index) {
       this.isOpenPopup = false;
       this.squares[index] = null;
+    },
+    addSquare() {
+      const openSquare = this.squares.findIndex((e) => e === null);
+      const newSquare = generateNewSquare();
+      this.squares[openSquare] = newSquare;
     }
   },
   mounted() {
@@ -74,6 +80,7 @@ export default {
       :index="popupActiveSquare"
       @onClose="onPopupClose"
       @onDelete="onPopupDelete"></delete-popup>
+    <button @click="addSquare">+</button>
   </section>
 </template>
 
@@ -87,6 +94,15 @@ export default {
   border: 1px solid #4d4d4d;
   background-color: #262626;
   overflow: hidden;
+
+  button {
+    background-color: transparent;
+    border: 1px solid #4d4d4d;
+    color: white;
+    font-size: 64px;
+    padding: 0;
+    cursor: pointer;
+  }
 }
 .squares {
   display: flex;
