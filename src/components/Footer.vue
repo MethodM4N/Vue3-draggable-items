@@ -1,5 +1,7 @@
-<script setup>
-name: 'Footer';
+<script>
+export default {
+  name: 'Footer'
+};
 </script>
 
 <template>
@@ -22,12 +24,6 @@ name: 'Footer';
   background-color: #262626;
   border: 1px solid #4d4d4d;
   border-radius: 12px;
-
-  img {
-    position: relative;
-    margin-bottom: 20px;
-    border-radius: 8px;
-  }
 
   div {
     min-width: 699px;
