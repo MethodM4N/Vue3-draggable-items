@@ -1,29 +1,27 @@
-# draggable-items
+## Тестовое задание: Vue-приложение автономно работающий инвентарь.
 
-This template should help get you started developing with Vue 3 in Vite.
+## Ссылка на Github Pages
 
-## Recommended IDE Setup
+https://methodm4n.github.io/Vue3-draggable-items/
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Функциональные особенности
 
-## Customize configuration
+- Возможность переноса инвентаря Drag and drop;
+- Сохраненные данные попадают в localStorage;
+- Вся функциональность реализована без использования сторонних библиотек.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Инструкция по установке и запуску
 
-## Project Setup
+Клонировать репозиторий ---> npm i ---> npm run serve
 
-```sh
-npm install
+## Стэк технологий
+
+```
+- HTML5
+- CSS3 (SCSS)
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
+```JS
+- JavaScript
+- Vue.js
 ```
