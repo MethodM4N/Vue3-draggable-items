@@ -1,6 +1,7 @@
 <script>
 import initialSquares from '@/assets/initialSquares.js';
 import generateNewSquare from '@/assets/generateNewSquare.js';
+import { getLocalStorageSquares, setLocalStorageSquares } from '@/assets/localStorageSquares.js';
 import DeletePopup from '@/components/DeletePopup.vue';
 
 export default {
@@ -28,6 +29,7 @@ export default {
       if (JSON.parse(square[0]) !== null) {
         this.squares[square[1]] = null;
         this.squares[index] = JSON.parse(square[0]);
+        setLocalStorageSquares(this.squares);
       }
     },
     onBoxClick(square, index) {
@@ -44,15 +46,18 @@ export default {
     onPopupDelete(index) {
       this.isOpenPopup = false;
       this.squares[index] = null;
+      setLocalStorageSquares(this.squares);
     },
     addSquare() {
       const openSquare = this.squares.findIndex((e) => e === null);
       const newSquare = generateNewSquare();
       this.squares[openSquare] = newSquare;
+      setLocalStorageSquares(this.squares);
     }
   },
   mounted() {
-    this.squares = [...initialSquares];
+    const squares = getLocalStorageSquares();
+    squares ? (this.squares = [...squares]) : (this.squares = [...initialSquares]);
   }
 };
 </script>
