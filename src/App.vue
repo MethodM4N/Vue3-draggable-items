@@ -1,53 +1,57 @@
 <template>
-  <div>
-    <header>
+  <div class="main-content">
+    <div class="main-content__flex">
       <Nav-bar />
-    </header>
+      <Main-grid />
+    </div>
 
-    <main>
-      <TheWelcome />
-    </main>
+    <Footer />
   </div>
-
-  <Footer />
 </template>
 
 <script>
 import NavBar from '@/components/Navbar.vue';
+import Footer from '@/components/Footer.vue';
+import MainGrid from '@/components/MainGrid.vue';
 
 export default {
   name: 'Main',
   components: {
-    NavBar
+    NavBar,
+    MainGrid,
+    Footer
   }
 };
 </script>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style lang="scss">
+#body {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: #1e1e1e;
+  box-sizing: border-box;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  font-weight: 400;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto 24px;
+  max-width: 849px;
+  padding: 32px;
+  background-color: #1d1d1d;
 
-@media (min-width: 1024px) {
-  header {
+  &__flex {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+    justify-content: space-between;
   }
 }
 </style>
