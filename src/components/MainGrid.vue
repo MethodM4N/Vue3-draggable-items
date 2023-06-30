@@ -29,7 +29,6 @@ export default {
       if (JSON.parse(square[0]) !== null) {
         this.squares[square[1]] = null;
         this.squares[index] = JSON.parse(square[0]);
-        setLocalStorageSquares(this.squares);
       }
     },
     onBoxClick(square, index) {
@@ -46,18 +45,24 @@ export default {
     onPopupDelete(index) {
       this.isOpenPopup = false;
       this.squares[index] = null;
-      setLocalStorageSquares(this.squares);
     },
     addSquare() {
       const openSquare = this.squares.findIndex((e) => e === null);
       const newSquare = generateNewSquare();
       this.squares[openSquare] = newSquare;
-      setLocalStorageSquares(this.squares);
     }
   },
   mounted() {
     const squares = getLocalStorageSquares();
     squares ? (this.squares = [...squares]) : (this.squares = [...initialSquares]);
+  },
+  watch: {
+    squares: {
+      handler(value) {
+        setLocalStorageSquares(value);
+      },
+      deep: true
+    }
   }
 };
 </script>
@@ -79,12 +84,14 @@ export default {
         @click="onBoxClick(square, index)"></div>
       <div v-if="square" class="squares__numbers">{{ square.count }}</div>
     </div>
+
     <delete-popup
-      v-if="isOpenPopup"
+      :isOpen="isOpenPopup"
       :color="popupColor"
       :index="popupActiveSquare"
       @onClose="onPopupClose"
       @onDelete="onPopupDelete"></delete-popup>
+
     <button @click="addSquare">+</button>
   </section>
 </template>
