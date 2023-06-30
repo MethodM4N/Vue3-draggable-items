@@ -13,6 +13,7 @@ export default {
 
 <style scoped lang="scss">
 .navbar {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -21,8 +22,18 @@ export default {
   border: 1px solid #4d4d4d;
   border-radius: 12px;
 
+  &:after {
+    position: absolute;
+    content: '';
+    width: 200px;
+    height: 240px;
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    top: 18px;
+    right: 14px;
+  }
+
   img {
-    position: relative;
     margin-bottom: 20px;
     border-radius: 8px;
   }

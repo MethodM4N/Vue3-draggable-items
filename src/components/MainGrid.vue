@@ -84,12 +84,14 @@ export default {
         @click="onBoxClick(square, index)"></div>
       <div v-if="square" class="squares__numbers">{{ square.count }}</div>
     </div>
+
     <delete-popup
-      v-if="isOpenPopup"
+      :isOpen="isOpenPopup"
       :color="popupColor"
       :index="popupActiveSquare"
       @onClose="onPopupClose"
       @onDelete="onPopupDelete"></delete-popup>
+
     <button @click="addSquare">+</button>
   </section>
 </template>
