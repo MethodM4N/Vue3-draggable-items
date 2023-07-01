@@ -14,22 +14,29 @@ export default {
       squares: [],
       isOpenPopup: false,
       popupColor: '',
-      popupActiveSquare: 0
+      popupActiveSquare: 0,
+      onDragIndex: 24
     };
   },
   methods: {
     onDragStart(e, square, index) {
+      this.onDragIndex = index;
       const json = [JSON.stringify(square), JSON.stringify(index)];
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('square', JSON.stringify(json));
     },
     onDrop(e, index) {
+      this.onDragIndex = 24;
       const square = JSON.parse(e.dataTransfer.getData('square'));
-      if (JSON.parse(square[0]) !== null) {
+      if (this.checkSquare(JSON.parse(square[0])) && this.checkSquare(this.squares[index])) {
+      } else if (this.checkSquare(JSON.parse(square[0]))) {
         this.squares[square[1]] = null;
         this.squares[index] = JSON.parse(square[0]);
       }
+    },
+    checkSquare(square) {
+      return square === null ? false : true;
     },
     onBoxClick(square, index) {
       if (square === null) {
@@ -72,6 +79,7 @@ export default {
     <div
       class="squares"
       v-for="(square, index) in squares"
+      :class="[onDragIndex === index ? 'squares_ondrag' : '']"
       :key="index"
       @dragstart="onDragStart($event, square, index)"
       draggable="true"
@@ -82,7 +90,7 @@ export default {
         class="squares__box"
         :class="[square ? square.color : '']"
         @click="onBoxClick(square, index)"></div>
-      <div v-if="square" class="squares__numbers">{{ square.count }}</div>
+      <div v-if="square && onDragIndex !== index" class="squares__numbers">{{ square.count }}</div>
     </div>
 
     <delete-popup
@@ -123,6 +131,10 @@ export default {
   border: 1px solid #4d4d4d;
   width: 105px;
   height: 100px;
+
+  &_ondrag {
+    border: none;
+  }
 
   &__numbers {
     align-self: flex-end;
