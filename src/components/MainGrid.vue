@@ -1,4 +1,5 @@
 <script>
+import { toRaw } from 'vue';
 import initialSquares from '@/assets/initialSquares.js';
 import generateNewSquare from '@/assets/generateNewSquare.js';
 import { getLocalStorageSquares, setLocalStorageSquares } from '@/assets/localStorageSquares.js';
@@ -21,7 +22,7 @@ export default {
   methods: {
     onDragStart(e, square, index) {
       this.onDragIndex = index;
-      const json = [JSON.stringify(square), JSON.stringify(index)];
+      const json = [toRaw(square), toRaw(index)];
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('square', JSON.stringify(json));
@@ -29,10 +30,10 @@ export default {
     onDrop(e, index) {
       this.onDragIndex = 24;
       const square = JSON.parse(e.dataTransfer.getData('square'));
-      if (this.checkSquare(JSON.parse(square[0])) && this.checkSquare(this.squares[index])) {
-      } else if (this.checkSquare(JSON.parse(square[0]))) {
+      if (this.checkSquare(square[0]) && this.checkSquare(this.squares[index])) {
+      } else if (this.checkSquare(square[0])) {
         this.squares[square[1]] = null;
-        this.squares[index] = JSON.parse(square[0]);
+        this.squares[index] = square[0];
       }
     },
     checkSquare(square) {
@@ -42,7 +43,7 @@ export default {
       if (square === null) {
         return;
       }
-      this.popupColor = JSON.parse(JSON.stringify(square.color));
+      this.popupColor = square.color;
       this.popupActiveSquare = index;
       this.isOpenPopup = true;
     },
