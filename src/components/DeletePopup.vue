@@ -1,6 +1,12 @@
 <script>
 export default {
   name: 'DeletePopup',
+  data() {
+    return {
+      extendedDeleteButton: false,
+      inputValue: 0
+    };
+  },
   props: {
     isOpen: {
       type: Boolean
@@ -10,9 +16,30 @@ export default {
     },
     index: {
       type: Number
+    },
+    deleteCount: {
+      type: Number
     }
   },
-  emits: ['onClose', 'onDelete']
+  emits: ['onClose', 'onDelete', 'onDeleteByValue'],
+  methods: {
+    onDelete() {
+      if (this.deleteCount > 1) {
+        this.extendedDeleteButton = true;
+      } else {
+        this.$emit('onDelete', this.index);
+      }
+    },
+    onDeleteByValue() {
+      this.$emit('onDeleteByValue', this.index, this.inputValue);
+      this.extendedDeleteButton = false;
+    }
+  },
+  watch: {
+    deleteCount() {
+      this.inputValue = this.deleteCount;
+    }
+  }
 };
 </script>
 
@@ -22,9 +49,16 @@ export default {
       <button class="popup__close-button" @click="$emit('onClose')"></button>
       <div class="popup__box" :class="[color ? color : '']"></div>
       <div class="popup__skeleton"></div>
-      <button class="popup__delete-button" @click="$emit('onDelete', index)">
-        Удалить предмет
-      </button>
+      <button class="popup__delete-button" @click="onDelete">Удалить предмет</button>
+
+      <div class="popup__extended" v-if="extendedDeleteButton">
+        <input type="text" placeholder="Введите количество" v-model.number="inputValue" />
+        <div>
+          <button @click="this.extendedDeleteButton = false">Отмена</button>
+          <button @click="onDeleteByValue()">Подтвердить</button>
+        </div>
+      </div>
+
       <div class="overlay" :class="isOpen && 'overlay_opened'" @click="$emit('onClose')"></div>
     </section>
   </Transition>
@@ -52,6 +86,7 @@ export default {
 .popup {
   position: absolute;
   right: 0;
+  width: 218px;
   padding: 78px 15px 18px;
   background-color: #26262680;
   border: 1px solid #4d4d4d;
@@ -120,6 +155,57 @@ export default {
     color: #ffffff;
     padding: 11px 56px;
     cursor: pointer;
+  }
+
+  &__extended {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 217px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #4d4d4d;
+    border-left: 1px solid #4d4d4d;
+    border-right: 1px solid #4d4d4d;
+    background-color: #26262680;
+    backdrop-filter: blur(12px);
+    padding: 20px 15px 20px;
+
+    input {
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffffffc0;
+      border: 1px solid #4d4d4d;
+      border-radius: 4px;
+      background-color: #262626;
+      outline: none;
+    }
+
+    div {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:first-of-type {
+          padding: 8px 19.5px;
+          background-color: #fff;
+          color: #2d2d2d;
+        }
+
+        &:last-of-type {
+          padding: 8px 15px;
+          background-color: #fa7272;
+          color: #ffffff;
+        }
+      }
+    }
   }
 }
 
