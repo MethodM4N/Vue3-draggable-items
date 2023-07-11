@@ -33,6 +33,11 @@ export default {
     onDeleteByValue() {
       this.$emit('onDeleteByValue', this.index, this.inputValue);
       this.extendedDeleteButton = false;
+    },
+    isNumber(event) {
+      if (!/^[0-9]+$/.test(event.key)) {
+        return event.preventDefault();
+      }
     }
   },
   watch: {
@@ -52,7 +57,11 @@ export default {
       <button class="popup__delete-button" @click="onDelete">Удалить предмет</button>
 
       <div class="popup__extended" v-if="extendedDeleteButton">
-        <input type="text" placeholder="Введите количество" v-model.number="inputValue" />
+        <input
+          type="text"
+          placeholder="Введите количество"
+          @keypress="isNumber($event)"
+          v-model.number="inputValue" />
         <div>
           <button @click="this.extendedDeleteButton = false">Отмена</button>
           <button @click="onDeleteByValue()">Подтвердить</button>
