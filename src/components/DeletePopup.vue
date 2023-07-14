@@ -79,6 +79,16 @@ export default {
   transform: translateX(150%);
 }
 
+@keyframes skeleton-animation {
+  0% {
+    transform: translateX(-30%);
+  }
+
+  100% {
+    transform: translateX(30%);
+  }
+}
+
 .overlay {
   visibility: hidden;
   position: absolute;
@@ -150,14 +160,36 @@ export default {
   }
 
   &__skeleton {
+    position: relative;
     min-width: 211px;
     height: 30px;
     border-radius: 8px;
-    background: linear-gradient(0.25turn, #3c3c3c 0%, #444444 50%, #3c3c3c 100%);
+    background-color: #3c3c3c;
     margin-bottom: 181px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(227, 227, 227, 0) 0%,
+        rgba(227, 227, 227, 0) 30%,
+        #444444b7 40%,
+        #444 50%,
+        #444444b7 60%,
+        rgba(227, 227, 227, 0) 70%,
+        rgba(227, 227, 227, 0) 100%
+      );
+      animation: skeleton-animation 1.2s linear infinite alternate;
+    }
   }
 
   &__delete-button {
+    white-space: nowrap;
     background-color: #fa7272;
     border-radius: 8px;
     border: none;
