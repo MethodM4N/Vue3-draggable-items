@@ -81,11 +81,11 @@ export default {
 
 @keyframes skeleton-animation {
   0% {
-    transform: translateX(-30%);
+    transform: translateX(0);
   }
 
   100% {
-    transform: translateX(30%);
+    transform: translateX(131px);
   }
 }
 
@@ -170,18 +170,17 @@ export default {
     &:after {
       content: '';
       position: absolute;
-      width: 100%;
+      width: 80px;
       height: 100%;
       top: 0;
       left: 0;
+      right: 0;
       background: linear-gradient(
         90deg,
         rgba(227, 227, 227, 0) 0%,
-        rgba(227, 227, 227, 0) 30%,
-        #444444b7 40%,
+        #444444b7 30%,
         #444 50%,
-        #444444b7 60%,
-        rgba(227, 227, 227, 0) 70%,
+        #444444b7 70%,
         rgba(227, 227, 227, 0) 100%
       );
       animation: skeleton-animation 1.2s linear infinite alternate;
