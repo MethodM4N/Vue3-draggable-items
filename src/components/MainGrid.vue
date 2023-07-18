@@ -14,6 +14,7 @@ export default {
     return {
       squares: [],
       isOpenPopup: false,
+      popupSquareValue: 0,
       popupColor: '',
       popupActiveSquare: 0,
       onDragIndex: 24
@@ -39,10 +40,11 @@ export default {
     checkSquare(square) {
       return square === null ? false : true;
     },
-    onBoxClick(square, index) {
+    onSquareClick(square, index) {
       if (square === null) {
         return;
       }
+      this.popupSquareValue = square.count;
       this.popupColor = square.color;
       this.popupActiveSquare = index;
       this.isOpenPopup = true;
@@ -53,6 +55,13 @@ export default {
     onPopupDelete(index) {
       this.isOpenPopup = false;
       this.squares[index] = null;
+    },
+    onPopupDeleteByValue(index, value) {
+      this.isOpenPopup = false;
+      this.squares[index].count = this.squares[index].count - value;
+      if (this.squares[index].count < 1) {
+        this.squares[index] = null;
+      }
     },
     addSquare() {
       const openSquare = this.squares.findIndex((e) => e === null);
@@ -90,7 +99,7 @@ export default {
       <div
         class="squares__box"
         :class="[square ? square.color : '']"
-        @click="onBoxClick(square, index)"></div>
+        @click="onSquareClick(square, index)"></div>
       <div v-if="square && onDragIndex !== index" class="squares__numbers">{{ square.count }}</div>
     </div>
 
@@ -98,8 +107,10 @@ export default {
       :isOpen="isOpenPopup"
       :color="popupColor"
       :index="popupActiveSquare"
+      :deleteCount="popupSquareValue"
       @onClose="onPopupClose"
-      @onDelete="onPopupDelete"></delete-popup>
+      @onDelete="onPopupDelete"
+      @onDeleteByValue="onPopupDeleteByValue" />
 
     <button @click="addSquare">+</button>
   </section>
