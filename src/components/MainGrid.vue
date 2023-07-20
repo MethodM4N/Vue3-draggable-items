@@ -17,25 +17,44 @@ export default {
       popupSquareValue: 0,
       popupColor: '',
       popupActiveSquare: 0,
-      onDragIndex: 24
+      onStartIndex: '',
+      onEnterIndex: ''
     };
   },
   methods: {
     onDragStart(e, square, index) {
-      this.onDragIndex = index;
+      if (!this.checkSquare(this.squares[index])) {
+        e.preventDefault();
+        return;
+      }
+      this.onStartIndex = index;
       const json = [toRaw(square), toRaw(index)];
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('square', JSON.stringify(json));
     },
+    onDragEnter(index) {
+      if (this.squares[index] === null || index === this.onStartIndex) {
+        this.onEnterIndex = index;
+      }
+    },
+    onDragLeave(index) {
+      if (this.checkSquare(this.squares[index]) && this.onStartIndex !== index) {
+        this.onEnterIndex = null;
+      }
+    },
     onDrop(e, index) {
-      this.onDragIndex = 24;
       const square = JSON.parse(e.dataTransfer.getData('square'));
       if (this.checkSquare(square[0]) && this.checkSquare(this.squares[index])) {
+        return;
       } else if (this.checkSquare(square[0])) {
         this.squares[square[1]] = null;
         this.squares[index] = square[0];
       }
+    },
+    onDragEnd() {
+      this.onEnterIndex = null;
+      this.onStartIndex = null;
     },
     checkSquare(square) {
       return square === null ? false : true;
@@ -66,7 +85,7 @@ export default {
     addSquare() {
       const openSquare = this.squares.findIndex((e) => e === null);
       const newSquare = generateNewSquare();
-      this.squares[openSquare] = newSquare;
+      this.squares[openSquare] = { ...newSquare };
     }
   },
   mounted() {
@@ -89,18 +108,23 @@ export default {
     <div
       class="squares"
       v-for="(square, index) in squares"
-      :class="[onDragIndex === index ? 'squares_ondrag' : '']"
+      :class="[
+        onStartIndex === index ? 'squares_on-drag' : '',
+        onEnterIndex === index ? 'squares_on-over' : ''
+      ]"
       :key="index"
-      @dragstart="onDragStart($event, square, index)"
       draggable="true"
-      @drop="onDrop($event, index)"
-      @dragenter.prevent
+      @dragstart="onDragStart($event, square, index)"
+      @drop.prevent="onDrop($event, index)"
+      @dragenter.prevent="onDragEnter(index)"
+      @dragleave="onDragLeave(index)"
+      @dragend="onDragEnd()"
       @dragover.prevent>
       <div
         class="squares__box"
         :class="[square ? square.color : '']"
         @click="onSquareClick(square, index)"></div>
-      <div v-if="square && onDragIndex !== index" class="squares__numbers">{{ square.count }}</div>
+      <div v-if="square && onStartIndex !== index" class="squares__numbers">{{ square.count }}</div>
     </div>
 
     <delete-popup
@@ -144,8 +168,12 @@ export default {
   width: 105px;
   height: 100px;
 
-  &_ondrag {
+  &_on-drag {
     border: none;
+  }
+
+  &_on-over {
+    background-color: #3c3c3c;
   }
 
   &__numbers {
