@@ -1,6 +1,6 @@
 const data = [
   { color: 'green', count: 4 },
-  { color: 'yellow', count: 2 },
+  { color: 'yellow', count: 1 },
   { color: 'blue', count: 5 },
   { color: 'yellow', count: 8 },
   { color: 'blue', count: 1 },

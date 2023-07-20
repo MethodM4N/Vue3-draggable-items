@@ -12,6 +12,16 @@ export default {
 </template>
 
 <style scoped lang="scss">
+@keyframes skeleton-animation {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(519px);
+  }
+}
+
 .footer {
   display: flex;
   align-self: center;
@@ -26,10 +36,30 @@ export default {
   border-radius: 12px;
 
   div {
+    position: relative;
     min-width: 699px;
     height: 36px;
     border-radius: 8px;
-    background: linear-gradient(0.25turn, #3c3c3c 0%, #444444 50%, #3c3c3c 100%);
+    background-color: #3c3c3c;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(227, 227, 227, 0) 0%,
+        #444444b7 30%,
+        #444 50%,
+        #444444b7 70%,
+        rgba(227, 227, 227, 0) 100%
+      );
+      animation: skeleton-animation 1.2s linear infinite alternate;
+    }
   }
 
   button {
