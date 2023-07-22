@@ -7,7 +7,11 @@ export default {
 <template>
   <div class="navbar">
     <img src="../images/Img-Blur.png" />
-    <div></div>
+    <div class="navbar__skeleton"></div>
+    <div class="navbar__skeleton navbar__skeleton_2"></div>
+    <div class="navbar__skeleton navbar__skeleton_3"></div>
+    <div class="navbar__skeleton navbar__skeleton_2"></div>
+    <div class="navbar__skeleton navbar__skeleton_4"></div>
   </div>
 </template>
 
@@ -18,7 +22,7 @@ export default {
   }
 
   100% {
-    transform: translateX(110px);
+    transform: translateX(130%);
   }
 }
 
@@ -48,18 +52,36 @@ export default {
     border-radius: 8px;
   }
 
-  div {
+  &__skeleton {
     position: relative;
+    background-color: #3c3c3c;
     width: 190px;
     height: 26px;
+    margin-bottom: 30px;
     border-radius: 8px;
-    margin-bottom: 172px;
-    background-color: #3c3c3c;
+
+    &_2 {
+      width: 170px;
+      height: 13px;
+      margin-bottom: 10px;
+    }
+
+    &_3 {
+      width: 190px;
+      height: 13px;
+      margin-bottom: 10px;
+    }
+
+    &_4 {
+      width: 140px;
+      height: 13px;
+      margin-bottom: 60px;
+    }
 
     &:after {
       content: '';
       position: absolute;
-      width: 80px;
+      width: 42%;
       height: 100%;
       top: 0;
       left: 0;
