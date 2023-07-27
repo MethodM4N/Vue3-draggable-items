@@ -12,7 +12,7 @@
 <script>
 import NavBar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
-import MainGrid from '@/components/MainGrid.vue';
+import MainGrid from '@/components/MainGrid/MainGrid.vue';
 
 export default {
   name: 'Main',
