@@ -1,60 +1,53 @@
-<script>
-export default {
-  name: 'DeletePopup',
-  data() {
-    return {
-      extendedDeleteButton: false,
-      inputValue: 0
-    };
-  },
-  props: {
-    isOpen: {
-      type: Boolean
-    },
-    color: {
-      type: String
-    },
-    index: {
-      type: Number
-    },
-    deleteCount: {
-      type: Number
-    }
-  },
-  emits: ['onClose', 'onDelete', 'onDeleteByValue'],
-  methods: {
-    onDelete() {
-      if (this.deleteCount > 1) {
-        this.extendedDeleteButton = true;
-      } else {
-        this.$emit('onDelete', this.index);
-      }
-    },
-    onDeleteByValue() {
-      this.$emit('onDeleteByValue', this.index, this.inputValue);
-      this.extendedDeleteButton = false;
-    },
-    isNumber(event) {
-      if (!/^[0-9]+$/.test(event.key)) {
-        return event.preventDefault();
-      }
-    }
-  },
-  watch: {
-    deleteCount() {
-      this.inputValue = this.deleteCount;
-    }
+<script setup>
+import { ref, watch } from 'vue';
+
+const extendedDeleteButton = ref(false);
+const inputValue = ref(0);
+
+const props = defineProps({
+  isOpen: Boolean,
+  color: String,
+  index: Number,
+  deleteCount: Number
+});
+
+const emits = defineEmits(['onClose', 'onDelete', 'onDeleteByValue']);
+
+const onDelete = () => {
+  if (props.deleteCount > 1) {
+    extendedDeleteButton.value = true;
+  } else {
+    emits('onDelete', props.index);
   }
 };
+
+const onDeleteByValue = () => {
+  emits('onDeleteByValue', props.index, inputValue.value);
+  extendedDeleteButton.value = false;
+};
+
+const isNumber = (event) => {
+  if (!/^[0-9]+$/.test(event.key)) {
+    return event.preventDefault();
+  }
+};
+
+watch(
+  () => props.deleteCount,
+  () => {
+    inputValue.value = props.deleteCount;
+  }
+);
 </script>
 
 <template>
   <Transition name="right-slide">
-    <section v-if="isOpen" class="popup" :class="isOpen && 'popup_opened'">
+    <section v-if="props.isOpen" class="popup" :class="props.isOpen && 'popup_opened'">
       <button class="popup__close-button" @click="$emit('onClose')"></button>
-      <div class="popup__box" :class="[color ? color : '']"></div>
+      <div class="popup__box" :class="[props.color ? props.color : '']"></div>
       <div class="popup__skeleton"></div>
-      <button class="popup__delete-button" @click="onDelete">Удалить предмет</button>
+      <div class="popup__skeleton popup__skeleton_2"></div>
+      <button class="popup__delete-button" @click="onDelete()">Удалить предмет</button>
 
       <div class="popup__extended" v-if="extendedDeleteButton">
         <input
@@ -63,12 +56,15 @@ export default {
           @keypress="isNumber($event)"
           v-model.number="inputValue" />
         <div>
-          <button @click="this.extendedDeleteButton = false">Отмена</button>
+          <button @click="extendedDeleteButton = false">Отмена</button>
           <button @click="onDeleteByValue()">Подтвердить</button>
         </div>
       </div>
 
-      <div class="overlay" :class="isOpen && 'overlay_opened'" @click="$emit('onClose')"></div>
+      <div
+        class="overlay"
+        :class="props.isOpen && 'overlay_opened'"
+        @click="$emit('onClose')"></div>
     </section>
   </Transition>
 </template>
@@ -85,7 +81,7 @@ export default {
   }
 
   100% {
-    transform: translateX(131px);
+    transform: translateX(161%);
   }
 }
 
@@ -150,6 +146,11 @@ export default {
       top: 0;
       transform: rotate(-45deg);
     }
+
+    &:hover {
+      opacity: 0.6;
+      transition: 0.3s ease;
+    }
   }
 
   &__box {
@@ -165,12 +166,18 @@ export default {
     height: 30px;
     border-radius: 8px;
     background-color: #3c3c3c;
-    margin-bottom: 181px;
+    margin-bottom: 30px;
+
+    &_2 {
+      height: 15px;
+      min-width: 180px;
+      margin-bottom: 136px;
+    }
 
     &:after {
       content: '';
       position: absolute;
-      width: 80px;
+      width: 38%;
       height: 100%;
       top: 0;
       left: 0;
@@ -195,6 +202,12 @@ export default {
     color: #ffffff;
     padding: 11px 56px;
     cursor: pointer;
+
+    &:hover {
+      transition: 0.3s ease;
+      box-shadow: 0 0 7px #fa7272;
+      text-shadow: 0 0 1px #ffffff8e, 0 0 2px #ffffff8e;
+    }
   }
 
   &__extended {
@@ -237,12 +250,23 @@ export default {
           padding: 8px 19.5px;
           background-color: #fff;
           color: #2d2d2d;
+
+          &:hover {
+            transition: 0.3s ease;
+            box-shadow: 0 0 4px #fff;
+          }
         }
 
         &:last-of-type {
           padding: 8px 15px;
           background-color: #fa7272;
           color: #ffffff;
+
+          &:hover {
+            transition: 0.3s ease;
+            box-shadow: 0 0 5px #fa7272;
+            text-shadow: 0 0 1px #ffffff8e, 0 0 2px #ffffff8e;
+          }
         }
       }
     }
